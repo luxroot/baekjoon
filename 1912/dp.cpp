@@ -18,6 +18,8 @@ int main()
     dp[0]=arr[0];
     for(i=1;i<n;i++)
         dp[i] = max(dp[i-1]+arr[i], arr[i]);
+        
+    result = dp[0];
     for(i=0;i<n;i++)
         result = max(result,dp[i]);
     cout << result;
