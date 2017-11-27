@@ -1,48 +1,55 @@
-#include <string>
 #include <iostream>
+#include <string>
+#include <stack>
+
 using namespace std;
- 
-string trans(char a) {
-    string result;
-    if (a == '0') result = "000";
-    else if (a == '1') result = "001";
-    else if (a == '2') result = "010";
-    else if (a == '3') result = "011";
-    else if (a == '4') result = "100";
-    else if (a == '5') result = "101";
-    else if (a == '6') result = "110";
-    else if (a == '7') result = "111";
-    return result;
+
+char bintooct(string str){
+    int result = 0;
+    if (str[0] == '1')
+        result += 4;
+    if (str[1] == '1')
+        result += 2;
+    if (str[2] == '1')
+        result += 1;
+    return '0' + result;
 }
- 
-string last(char a) {
-    string result;
-    if (a == '1') result = "1";
-    else if (a == '2') result = "10";
-    else if (a == '3') result = "11";
-    else if (a == '4') result = "100";
-    else if (a == '5') result = "101";
-    else if (a == '6') result = "110";
-    else if (a == '7') result = "111";
-    return result;
-}
- 
- 
+
 int main()
 {
-    string s;
-    int len;
-    cin >> s;
-    len = s.length();
-    if (s == "0" && len == 1) {
-        cout << 0;
-        return 0;
+    string str;
+    stack <char> st;
+    int l, i;
+    cin >> str;
+    l = str.size();
+    for (i = l-3; i >-1; i-=3)
+        st.push(bintooct(str.substr(i,3)));
+        
+    if (i==-2){
+        string temp;
+        temp = "00";
+        temp = temp+str.substr(0,1);
+        st.push(bintooct(temp));
     }
-    cout << last(s[0]);
-    for (int i = 1; i<len; i++) {
-        cout << trans(s[i]);
- 
+    if (i==-1){
+        string temp;
+        temp = "0";
+        temp = temp+str.substr(0,2);
+        st.push(bintooct(temp));
     }
+    bool flag=true;
+    while(!st.empty())
+    {
+        if ( flag && st.top() == '0'){
+            st.pop();
+            continue;
+        }
+        else
+            flag = false;
+        cout << st.top();
+        st.pop();
+    }
+    if(flag)
+        cout <<'0';
     return 0;
- 
 }
