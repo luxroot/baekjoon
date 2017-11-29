@@ -13,7 +13,7 @@ int main()
             cin >> tmp;
             sum += tmp;
         }
-        cout << sum;
+        cout << sum << endl;
     }
     return 0;
 }
