@@ -7,20 +7,24 @@ using namespace std;
 int main()
 {
     int n, i, j;
-    bool isprime[246922];
-    memset(isprime,true,sizeof(isprime));
-    for (i=2;i<497;i++){
-        for(j=i*2;j<246922;j+=i)
-            isprime[j]=false;
+    bool isprime[300000];
+    memset(isprime,0,sizeof(isprime));
+    
+    for (i=2;i<=600;i++){
+        for(j=i*2;j<=300000;j+=i)
+            isprime[j]=1;
     }
     
-    isprime[1] = false;
+    isprime[1] = 1;
     n=1;
+    
     while(n){
         int cnt=0;
         cin >> n;
+        if(!n)
+            break;
         for(i=n+1;i<=2*n;i++)
-            if(isprime[i])
+            if(!isprime[i])
                 cnt++;
         printf("%d\n",cnt);
     }
