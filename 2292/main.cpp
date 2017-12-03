@@ -13,4 +13,5 @@ int main()
         j+=6*i;
     }
     cout << i;
+    return 0;
 }
