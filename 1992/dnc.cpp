@@ -14,7 +14,7 @@ int isAll(int level, int x, int y){
                 allo=false;
             if(map[i][j]==false)
                 allz=false;
-        }       
+        }
     }
     printf("\nisAll CALLED l:%d x:%d y:%d z:%d o:%d\n",level,x,y,allz,allo);
     if(allz) return 1;
@@ -54,7 +54,7 @@ int main()
         cin>>i;
         cout <<'('<< i<<')';
         return 0;
-    } 
+    }
     while(i!=n){
         i*=2;
         level++;
