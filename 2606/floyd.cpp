@@ -12,7 +12,7 @@ int main()
         int a,b;
         cin >> a >> b;
         adj[a][b]=true;
-        adj[a][b]=true;
+        adj[b][a]=true;
     }
     queue<int> q;
     vector<bool> visited;
@@ -31,7 +31,7 @@ int main()
     }
     for(i=1;i<=v;i++){
         if(visited[i]) cnt++;
-        cout << i<<" "<<visited[i]<<endl;
+        // cout << i<<" "<<visited[i]<<endl;
     }
     cout << cnt-1;
     return 0;
