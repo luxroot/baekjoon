@@ -15,6 +15,6 @@ int main()
         dp.push_back(dp[i-1]+dp[i-2]+dp[i-3]);
     for(i=0;i<n;i++){
         cin >> tmp;
-        cout << dp[tmp];
+        cout << dp[tmp] << endl;
     }
 }
