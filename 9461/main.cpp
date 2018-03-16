@@ -4,7 +4,8 @@ using namespace std;
 
 int main()
 {
-    int i,n,j,arr[110];
+    int i,n,j;
+    long long arr[110];
     arr[0]=1;
     arr[1]=1;
     arr[2]=1;
