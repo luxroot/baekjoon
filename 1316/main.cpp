@@ -13,8 +13,18 @@ int main()
     for(i=0;i<n;i++){
         cin >> temp;
         memset(already,0,sizeof(already));
+        char prev='A';
         for(j=0;j<temp.size();j++){
-            
+            if(prev!=temp[j] & already[temp[j]-'a']){
+                goto aa;
+            }
+            if(prev!=temp[j])
+                already[temp[j]-'a']=true;
+            prev=temp[j];
         }
+        cnt++;
+        aa: ;
     }
+    cout << cnt << endl;
+    return 0;;
 }
