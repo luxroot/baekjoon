@@ -25,7 +25,7 @@ int main(){
             dp[i][0]=max(dp[i-1][1],dp[i-2][1])+arr[i][0];
             dp[i][1]=max(dp[i-1][0],dp[i-2][0])+arr[i][1];
         }
-        printf("%d\n",max(max(max(dp[n-1][0],dp[n-1][1]),dp[n-2][0]),dp[n-2][1]));
+        printf("%d\n",max(dp[n-1][0],dp[n-1][1]));
     }
     return 0;
 }
