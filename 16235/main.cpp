@@ -1,78 +1,133 @@
-#include <iostream>
-#include <vector>
 #include <algorithm>
 #include <deque>
+#include <iostream>
+#include <vector>
 
 using namespace std;
 
-typedef struct _Ground{
-    deque<int> atrees;
-    int nut;
-    deque<int> dtrees;
-}Ground;
+typedef struct _Ground {
+  deque<int> atrees; // denotes alive trees
+  int nut;           // denotes current nutrients in that ground
+  deque<int> dtrees; // denotes dead trees
+} Ground;
 
-vector< vector<Ground> > ground;
-vector< vector<int> > nutrient;
-int n,m,k,i,j;
+vector<vector<Ground>> ground;
+vector<vector<int>> nutrient;
+int n, m, k;
 
-void print(){
-    for(i=0;i<n;i++){
-        for(j=0;j<n;j++){
-            cout << ground[i][j].nut << "{";
-            for(auto it :ground[i][j].atrees){
-                cout << it << ", ";
-            }
-            cout << "} ";
+void spring() {
+  int i, j;
+  for (i = 0; i < n; i++) {
+    for (j = 0; j < n; j++) {
+      for (auto it = ground[i][j].atrees.begin();
+           it != ground[i][j].atrees.end(); it++) {
+        if (ground[i][j].nut < *it) { // case which not enough nutrients
+          ground[i][j].dtrees = deque<int>(it, ground[i][j].atrees.end());
+          ground[i][j].atrees.erase(it, ground[i][j].atrees.end());
+          break;
         }
-        cout << endl;
+        ground[i][j].nut -= (*it);
+        (*it)++;
+      }
     }
+  }
 }
 
-
-void spring(){
-    for(i=0;i<n;i++){
-        for(j=0;j<n;j++){
-            for(auto it : ground[i][j].atrees){
-                if(ground[i][j].nut >= it){
-                    ground[i][j].nut-=it;
-                }
-                else{
-                    // ground[i][j].dtrees.insert()
-                }
-            }
-        }
+void summer() {
+  int i, j;
+  for (i = 0; i < n; i++) {
+    for (j = 0; j < n; j++) {
+      for (auto it : ground[i][j].dtrees) {
+        ground[i][j].nut += it / 2;
+      }
+      ground[i][j].dtrees.clear();
     }
+  }
 }
 
-int main(){
-    ios::sync_with_stdio(false);
+void fall() {
+  int i, j;
+  int t, xx, yy;
+  for (i = 0; i < n; i++) {
+    for (j = 0; j < n; j++) {
+      for (auto it : ground[i][j].atrees) {
+        if (it % 5 != 0)
+          continue;
+        for (t = 0; t < 9; t++) {
+          // Set up x, y diff
+          xx = t / 3 - 1;
+          yy = t % 3 - 1;
+          // Same position
+          if (xx == 0 && yy == 0) {
+            continue;
+          }
+          // Out of ground
+          if (i + xx == -1 || i + xx == n || j + yy == -1 || j + yy == n) {
+            continue;
+          }
+          // Makes children
+          ground[i + xx][j + yy].atrees.push_front(1);
+        }
+      }
+    }
+  }
+}
 
-    cin >> n >> m >> k;
-    ground.reserve(n);
-    nutrient.reserve(n);
-    for(i=0;i<n;i++){
-        ground[i].resize(n);
-        nutrient[i].reserve(n);
-        for(j=0;j<n;j++){
-            ground[i][j].nut=5;
-        }
+void winter() {
+  int i, j;
+  for (i = 0; i < n; i++) {
+    for (j = 0; j < n; j++) {
+      ground[i][j].nut += nutrient[i][j];
     }
-    for(i=0;i<n;i++){
-        for(j=0;j<n;j++){
-            cin >> nutrient[i][j];
-        }
-    }
-    for(i=0;i<m;i++){
-        int numOfTrees;
-        cin >> j >> k >> numOfTrees;
-        ground[j-1][k-1].atrees.push_back(numOfTrees);
-    }
-    for(i=0;i<n;i++){
-        for(j=0;j<n;j++){
-            sort(ground[i][j].atrees.begin(), ground[i][j].atrees.end());
-        }
-    }
+  }
+}
 
-    print();
-    return 0;
+// counting function
+int count() {
+  int i, j, cnt = 0;
+  for (i = 0; i < n; i++) {
+    for (j = 0; j < n; j++) {
+      cnt += ground[i][j].atrees.size();
+    }
+  }
+  return cnt;
+}
+
+void year() {
+  spring();
+  summer();
+  fall();
+  winter();
+}
+
+int main() {
+  int i, j;
+  ios::sync_with_stdio(false);
+
+  cin >> n >> m >> k;
+  ground.reserve(n);
+  nutrient.reserve(n);
+  for (i = 0; i < n; i++) {
+    ground[i].resize(n); // to initialize deque
+    nutrient[i].reserve(n);
+    for (j = 0; j < n; j++) {
+      ground[i][j].nut = 5;
+    }
+  }
+  for (i = 0; i < n; i++) {
+    for (j = 0; j < n; j++) {
+      cin >> nutrient[j][i];
+    }
+  }
+  for (i = 0; i < m; i++) {
+    int x, y, z;
+    cin >> x >> y >> z;
+    ground[y - 1][x - 1].atrees.push_front(z);
+  }
+  for (i = 0; i < k; i++) {
+    year();
+  }
+
+  cout << count();
+  return 0;
 }
